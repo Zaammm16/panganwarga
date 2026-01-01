@@ -3,9 +3,9 @@ import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
 import GlobalReach from '@/components/sections/GlobalReach';
 import ProductShowcase from '@/components/sections/ProductShowcase';
-import Values from '@/components/sections/Values'; // Baru
-import CTA from '@/components/sections/CTA';       // Baru
-import Footer from '@/components/layout/Footer';   // Baru
+import Values from '@/components/sections/Values'; 
+import CTA from '@/components/sections/CTA';       
+import Footer from '@/components/layout/Footer';  
 
 export default function Home() {
   return (
