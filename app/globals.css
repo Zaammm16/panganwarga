@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  /* 1. Mendaftarkan Warna Custom */
+  --color-forest-800: #1e3d1a; /* Hijau Tua */
+  --color-forest: #2D5A27;     /* Hijau Utama */
+  --color-cream: #F9F7F2;      /* Background */
+  --color-gold: #D4AF37;       /* Aksen Emas */
+
+  /* 2. Mendaftarkan Font Custom */
+  /* Ini mengambil variabel --font-jakarta yang kita set di layout.tsx nanti */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* 3. Custom CSS Manual (Glassmorphism & Animasi) */
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animasi Jalur Distribusi (Garis Putus-putus berjalan) */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.animate-dash {
+  animation: dash 2s linear infinite;
+}
