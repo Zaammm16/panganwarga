@@ -1,15 +1,14 @@
-"use server"; // Ini wajib ada! Menandakan kode ini hanya berjalan di server (aman).
+"use server"; 
 
-import { prisma } from '@/lib/prisma';// Import Prisma Client untuk akses database
+import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
-// Kita buat tipe data untuk spesifikasi
 interface SpecInput {
   label: string;
   value: string;
 }
 
-// Fungsi utama untuk menyimpan komoditas
+// 1. Fungsi Simpan: Sudah mendukung relasi Specs
 export async function simpanKomoditasKeDatabase(data: {
   title: string;
   category: string;
@@ -18,14 +17,12 @@ export async function simpanKomoditasKeDatabase(data: {
   specs: SpecInput[];
 }) {
   try {
-    // Memerintahkan Prisma untuk membuat data baru di tabel Product
     const newProduct = await prisma.product.create({
       data: {
         title: data.title,
         category: data.category,
         desc: data.desc,
         imageUrl: data.imageUrl,
-        // Menyimpan spesifikasi sekaligus (karena kita pakai relasi)
         specs: {
           create: data.specs.map(spec => ({
             label: spec.label,
@@ -35,7 +32,8 @@ export async function simpanKomoditasKeDatabase(data: {
       }
     });
 
-    // Menyegarkan halaman dashboard agar data baru langsung muncul
+    // Segarkan cache agar data baru muncul di semua halaman
+    revalidatePath('/');
     revalidatePath('/admin/dashboard'); 
     
     return { success: true, message: "Berhasil disimpan!" };
@@ -45,13 +43,15 @@ export async function simpanKomoditasKeDatabase(data: {
   }
 }
 
-// Fungsi untuk mengambil semua data komoditas dari database
+// 2. Fungsi Ambil Semua: FIXED (Sekarang mengajak data Specs)
 export async function ambilSemuaKomoditas() {
   try {
-    // Meminta Prisma mengambil semua data di tabel Product
     const products = await prisma.product.findMany({
+      include: { 
+        specs: true // <--- Inilah kunci agar spesifikasi muncul di katalog depan
+      },
       orderBy: {
-        createdAt: 'desc' // Urutkan dari yang paling baru ditambahkan
+        createdAt: 'desc'
       }
     });
     return { success: true, data: products };
@@ -61,12 +61,14 @@ export async function ambilSemuaKomoditas() {
   }
 }
 
-// Fungsi untuk menghapus komoditas berdasarkan ID
+// 3. Fungsi Hapus: Menghapus produk (Specs akan ikut terhapus karena Cascade)
 export async function hapusKomoditas(id: string) {
   try {
     await prisma.product.delete({
       where: { id: id }
     });
+    revalidatePath('/');
+    revalidatePath('/admin/dashboard');
     return { success: true };
   } catch (error) {
     console.error("Gagal menghapus data:", error);
@@ -74,12 +76,12 @@ export async function hapusKomoditas(id: string) {
   }
 }
 
-// Fungsi untuk mengambil 1 komoditas secara spesifik untuk di-edit
+// 4. Fungsi Ambil Berdasarkan ID
 export async function ambilKomoditasBerdasarkanId(id: string) {
   try {
     const product = await prisma.product.findUnique({
       where: { id: id },
-      include: { specs: true } // Ambil juga spesifikasinya
+      include: { specs: true } 
     });
     return { success: true, data: product };
   } catch (error) {
@@ -88,15 +90,15 @@ export async function ambilKomoditasBerdasarkanId(id: string) {
   }
 }
 
-// Fungsi untuk menyimpan perubahan data (Update)
+// 5. Fungsi Update: FIXED (Menghapus specs lama dan membuat yang baru)
 export async function updateKomoditas(id: string, data: any) {
   try {
-    // Trik aman: Hapus semua spesifikasi lama, lalu buat ulang yang baru
+    // Hapus specs lama agar tidak duplikat atau tertinggal
     await prisma.spec.deleteMany({
       where: { productId: id }
     });
 
-    // Update data produk utama dan masukkan spesifikasi baru
+    // Update data utama dan masukkan specs baru
     await prisma.product.update({
       where: { id: id },
       data: {
@@ -105,10 +107,18 @@ export async function updateKomoditas(id: string, data: any) {
         desc: data.desc,
         imageUrl: data.imageUrl,
         specs: {
-          create: data.specs
+          create: data.specs.map((spec: any) => ({
+            label: spec.label,
+            value: spec.value
+          }))
         }
       }
     });
+
+    // Paksa Vercel memperbarui tampilan website
+    revalidatePath('/');
+    revalidatePath('/admin/dashboard');
+
     return { success: true };
   } catch (error) {
     console.error("Gagal update data:", error);
