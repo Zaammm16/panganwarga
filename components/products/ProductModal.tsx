@@ -43,7 +43,7 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       {/* Backdrop Gelap (Klik untuk tutup) */}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm animate-fade-in cursor-pointer"
         onClick={onClose}
       ></div>
 
@@ -78,10 +78,6 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
             alt={product.title}
             className="absolute inset-0 w-full h-full object-cover"
           />
-
-          {/* PERBAIKAN THUMBNAIL: Karena database hanya punya 1 gambar (imageUrl),
-              kita hilangkan loop map array yang bikin error. Jika ke depannya kamu 
-              membuat tabel database untuk banyak gambar, fitur ini bisa dikembalikan */}
         </div>
 
         {/* KANAN: Detail Produk */}
@@ -102,7 +98,7 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
             </h3>
             <table className="w-full text-sm">
               <tbody>
-                {/* Kita cek dulu apakah ada specs, jika ada baru kita map */}
+                {/* Perbaikan Logika Map Spesifikasi */}
                 {product.specs && product.specs.length > 0 ? (
                   product.specs.map((spec, idx) => (
                     <tr
@@ -117,7 +113,9 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
                   ))
                 ) : (
                   <tr>
-                    <td className="py-2 text-gray-500 italic">Spesifikasi belum ditambahkan.</td>
+                    <td className="py-2 text-gray-500 italic">
+                      Spesifikasi belum ditambahkan.
+                    </td>
                   </tr>
                 )}
               </tbody>
