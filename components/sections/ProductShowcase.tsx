@@ -1,18 +1,50 @@
 "use client";
-import { useState } from 'react';
-import { products, Product } from '@/data/products'; // Import data JSON
-import ProductCard from '@/components/products/ProductCard'; // Import komponen Kartu
-import ProductModal from '@/components/products/ProductModal'; // Import komponen Modal
+
+import { useState, useEffect } from 'react';
+// Import fungsi ambil data dari database (Server Action)
+import { ambilSemuaKomoditas } from '@/app/actions/product'; 
+import ProductCard from '@/components/products/ProductCard'; 
+import ProductModal from '@/components/products/ProductModal'; 
+
+// Kita buat tipe data Product sesuai dengan struktur Database Prisma kita
+export interface Product {
+  id: string;
+  title: string;
+  category: string;
+  desc: string;
+  imageUrl: string;
+  specs?: { label: string; value: string }[]; 
+}
 
 export default function ProductShowcase() {
-  // State untuk Filter (all / raw / processed)
   const [filter, setFilter] = useState<'all' | 'raw' | 'processed'>('all');
-  
-  // State untuk Produk yang sedang dipilih (diklik)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  
+  // State baru untuk menyimpan data asli dari database dan status loading
+  const [dbProducts, setDbProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Logika Filter
-  const filteredProducts = products.filter(p => filter === 'all' || p.category === filter);
+  // Mengambil data dari database saat komponen ini pertama kali muncul
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const hasil = await ambilSemuaKomoditas();
+        if (hasil.success && hasil.data) {
+          // Masukkan data dari database ke state
+          setDbProducts(hasil.data as unknown as Product[]); 
+        }
+      } catch (error) {
+        console.error("Gagal memuat data:", error);
+      } finally {
+        setIsLoading(false); // Matikan loading setelah selesai
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Logika Filter (sekarang memfilter dari dbProducts, bukan dari data statis)
+  const filteredProducts = dbProducts.filter(p => filter === 'all' || p.category === filter);
 
   return (
     <section id="products" className="py-24 bg-cream relative overflow-hidden">
@@ -43,21 +75,34 @@ export default function ProductShowcase() {
            </div>
         </div>
 
-        {/* Grid Produk */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product) => (
-            <ProductCard 
-              key={product.id}
-              product={product}
-              onClick={() => setSelectedProduct(product)}
-            />
-          ))}
-        </div>
+        {/* Tampilan Loading atau Grid Produk */}
+        {isLoading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="w-12 h-12 border-4 border-forest border-t-transparent rounded-full animate-spin"></div>
+            <span className="ml-4 text-gray-500 font-medium">Memuat komoditas segar...</span>
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="text-center py-20 bg-white/50 rounded-2xl border border-dashed border-gray-300">
+            <span className="text-4xl mb-3 block">🌱</span>
+            <p className="text-gray-500">Belum ada komoditas di kategori ini.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((product) => (
+              <ProductCard 
+                key={product.id}
+                product={product as any}
+                onClick={() => setSelectedProduct(product)}
+              />
+            ))}
+          </div>
+        )}
+
       </div>
 
       {/* Render Modal (Hanya muncul jika selectedProduct tidak null) */}
       <ProductModal 
-        product={selectedProduct} 
+        product={selectedProduct as any} 
         isOpen={!!selectedProduct} 
         onClose={() => setSelectedProduct(null)} 
       />

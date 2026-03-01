@@ -1,0 +1,33 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Tabel untuk menyimpan data utama Komoditas
+model Product {
+  id        String   @id @default(cuid())
+  title     String
+  category  String   
+  desc      String
+  imageUrl  String   
+  specs     Spec[]   
+  
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt      
+}
+
+// Tabel terpisah untuk Spesifikasi
+model Spec {
+  id        String  @id @default(cuid())
+  label     String  
+  value     String  
+  
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}

@@ -27,13 +27,21 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           
           {/* LOGO */}
-          <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo(0,0)}>
-            {/* Logo Bulat Tetap Hijau/Putih karena kontrasnya cukup */}
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors duration-300 
-              ${isScrolled ? 'bg-forest text-white' : 'bg-white text-forest'}`}>
-              PW
+          <div className="flex-shrink-0 flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo(0,0)}>
+            
+            {/* WADAH LOGO BARU (Sudah Melingkar) */}
+            <div className={`w-12 h-12 transition-transform duration-300 rounded-full flex items-center justify-center p-1 border-2 border-white/50 shadow-inner
+              ${isScrolled ? 'bg-forest/50' : 'bg-white/10'}`}>
+              
+              {/* GAMBAR LOGO BARU (Dipotong Menjadi Lingkaran Sempurna) */}
+              <img 
+                src="/images/logo pwn.jpg" 
+                alt="Logo Pangan Warga Nusantara" 
+                className="w-full h-full object-contain rounded-full shadow-lg bg-white/10 shadow-lg p-[1px]" // shadow-lg & p-[1px] tambahan untuk efek
+              />
             </div>
-            {/* Teks Logo: Putih saat transparan, Hijau saat discroll */}
+            
+            {/* Teks Logo */}
             <span className={`font-bold text-xl tracking-tight transition-colors duration-300 
               ${isScrolled ? 'text-forest' : 'text-white drop-shadow-md'}`}>
               Pangan Warga

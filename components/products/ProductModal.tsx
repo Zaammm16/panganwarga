@@ -1,6 +1,16 @@
 "use client";
-import { Product } from "@/data/products";
+
 import { useEffect, useState } from "react";
+
+// Tipe data Product yang sesuai dengan struktur Database Prisma
+interface Product {
+  id: string;
+  title: string;
+  category: string;
+  desc: string;
+  imageUrl: string;
+  specs?: { label: string; value: string }[]; 
+}
 
 interface ModalProps {
   product: Product | null;
@@ -9,12 +19,12 @@ interface ModalProps {
 }
 
 export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
-  // State untuk gambar aktif di dalam modal
+  // State untuk gambar aktif (Sekarang mengambil dari imageUrl)
   const [activeImage, setActiveImage] = useState<string>("");
 
   // Update gambar aktif saat produk berubah
   useEffect(() => {
-    if (product) setActiveImage(product.images[0]);
+    if (product) setActiveImage(product.imageUrl);
   }, [product]);
 
   // Kunci scroll body saat modal terbuka
@@ -39,6 +49,7 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
 
       {/* Konten Modal */}
       <div className="relative bg-cream w-full max-w-5xl h-[85vh] md:h-[600px] rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-fade-up z-10">
+        
         {/* Tombol Close */}
         <button
           onClick={onClose}
@@ -61,35 +72,16 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
 
         {/* KIRI: Galeri Gambar */}
         <div className="w-full md:w-1/2 h-1/2 md:h-full bg-gray-100 relative group">
-          {/* PERBAIKAN DI SINI: Menggunakan fallback || product.images[0] */}
+          {/* Menggunakan imageUrl tunggal dari database */}
           <img
-            src={activeImage || product.images[0]}
+            src={activeImage || product.imageUrl}
             alt={product.title}
             className="absolute inset-0 w-full h-full object-cover"
           />
 
-          {/* Thumbnails */}
-          <div className="absolute bottom-4 left-0 w-full px-6 flex gap-3 overflow-x-auto z-10 justify-center">
-            {product.images.map((img, idx) => (
-              <button
-                key={idx}
-                onClick={() => setActiveImage(img)}
-                // Logika border aktif juga diperbarui agar konsisten
-                className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 
-                  ${
-                    (activeImage || product.images[0]) === img
-                      ? "border-gold scale-110"
-                      : "border-white/50 opacity-70 hover:opacity-100"
-                  }`}
-              >
-                <img
-                  src={img}
-                  className="w-full h-full object-cover"
-                  alt={`Thumbnail ${idx + 1}`}
-                />
-              </button>
-            ))}
-          </div>
+          {/* PERBAIKAN THUMBNAIL: Karena database hanya punya 1 gambar (imageUrl),
+              kita hilangkan loop map array yang bikin error. Jika ke depannya kamu 
+              membuat tabel database untuk banyak gambar, fitur ini bisa dikembalikan */}
         </div>
 
         {/* KANAN: Detail Produk */}
@@ -110,22 +102,29 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
             </h3>
             <table className="w-full text-sm">
               <tbody>
-                {product.specs.map((spec, idx) => (
-                  <tr
-                    key={idx}
-                    className="border-b border-gray-200 last:border-0"
-                  >
-                    <td className="py-2 text-gray-500 font-medium w-1/2">
-                      {spec.label}
-                    </td>
-                    <td className="py-2 text-forest font-bold">{spec.value}</td>
+                {/* Kita cek dulu apakah ada specs, jika ada baru kita map */}
+                {product.specs && product.specs.length > 0 ? (
+                  product.specs.map((spec, idx) => (
+                    <tr
+                      key={idx}
+                      className="border-b border-gray-200 last:border-0"
+                    >
+                      <td className="py-2 text-gray-500 font-medium w-1/2">
+                        {spec.label}
+                      </td>
+                      <td className="py-2 text-forest font-bold">{spec.value}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="py-2 text-gray-500 italic">Spesifikasi belum ditambahkan.</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
 
-          {/* GANTI TOMBOL INI */}
+          {/* TOMBOL WHATSAPP */}
           <a
             href={`https://wa.me/+6285298591487?text=Hello, I am interested in your ${product.title}. Can you send me a quotation?`}
             target="_blank"
