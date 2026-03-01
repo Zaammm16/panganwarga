@@ -1,4 +1,11 @@
-import { Product } from '@/data/products';
+// 1. Kita buatkan "KTP" baru yang jelas untuk TypeScript
+export interface Product {
+  id: string;
+  title: string;
+  category: string;
+  desc: string;
+  imageUrl: string; // Nah, ini dia yang dicari-cari Vercel!
+}
 
 interface ProductCardProps {
   product: Product;
