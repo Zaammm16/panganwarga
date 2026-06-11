@@ -4,22 +4,37 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function DetailedProfilePage() {
-  // Bagan 1: Struktur Kepengurusan Inti & Divisi Kerja (Sesuai Halaman 5 Proposal)
-  const organisasi = [
+  // Bagan 1: Struktur Kepengurusan Inti dengan Metadata Gambar Medsos (Paling Atas)
+  const pengurusInti = [
     {
-      kategori: "Pengurus Inti Komunitas",
-      warna: "border-gold bg-gold/5",
-      shadow: "shadow-gold/10",
-      anggota: [
-        { nama: "Muh. Wais", jabatan: "Ketua Umum" },
-        { nama: "Muhammad Fachri Siswanto", jabatan: "Sekretaris" },
-        { nama: "Sudrajat S", jabatan: "Bendahara" }
-      ]
+      nama: "Muh. Wais",
+      jabatan: "Ketua Umum",
+      roleDesc: "Penanggung Jawab Utama & Pengarah Ekspedisi Kebudayaan",
+      instagram: "@wais_pwn",
+      // Kamu bisa ganti url gambar ini dengan foto asli Kak Wais nantinya
+      foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" 
     },
+    {
+      nama: "Muhammad Fachri Siswanto",
+      jabatan: "Sekretaris Organisasi",
+      roleDesc: "Komparator Data Riset, Administrasi Kelayakan, & Hubungan Lembaga",
+      instagram: "@fachri_siswanto",
+      foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      nama: "Sudrajat S",
+      jabatan: "Bendahara Umum",
+      roleDesc: "Manajemen Alokasi Anggaran & Akuntabilitas Dana Bantuan Kebudayaan",
+      instagram: "@sudrajat_s",
+      foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"
+    }
+  ];
+
+  // Divisi Pendukung Lapangan
+  const divisiPendukung = [
     {
       kategori: "Divisi Riset & Dokumentasi Pangan",
       warna: "border-forest bg-forest/5",
-      shadow: "shadow-forest/10",
       anggota: [
         { nama: "Dicky Zulkarnain Madjid", jabatan: "Kordinator Riset" },
         { nama: "Muh. Kadri", jabatan: "Anggota Riset" },
@@ -29,7 +44,6 @@ export default function DetailedProfilePage() {
     {
       kategori: "Divisi Pemberdayaan Komunitas",
       warna: "border-emerald-200 bg-emerald-50/30",
-      shadow: "shadow-emerald-900/5",
       anggota: [
         { nama: "Hariadi", jabatan: "Kordinator Lapangan" },
         { nama: "Aco Nursyamsu", jabatan: "Fasilitator Petani" },
@@ -38,7 +52,7 @@ export default function DetailedProfilePage() {
     }
   ];
 
-  // Bagan 2: Lini Masa Aksi Lapangan & Ekspedisi (Sesuai Halaman 6 Proposal)
+  // Bagan 2: Lini Masa Aksi Lapangan & Ekspedisi
   const baganKegiatan = [
     {
       tahun: "2022",
@@ -117,10 +131,86 @@ export default function DetailedProfilePage() {
         </div>
       </section>
 
-      {/* 2. NARASI UTAMA PERUSAHAAN */}
+      {/* 2. BAGAN UTAMA: DEWAN PENGURUS INTI (Pindah ke Paling Atas dengan Tampilan Grid Visual Medsos) */}
+      <section className="py-20 px-4 max-w-6xl mx-auto space-y-12">
+        <div className="text-center space-y-2">
+          <span className="text-xs font-bold text-gold uppercase tracking-widest bg-forest px-3 py-1 rounded-sm">Struktur Komite Tertinggi</span>
+          <h2 className="text-3xl font-black text-gray-900 tracking-tight">Dewan Pengurus Inti</h2>
+          <p className="text-xs text-gray-400 max-w-md mx-auto">Aparatur pelaksana program kepemimpinan nasional yang bertanggung jawab atas legalitas operasional organisasi.</p>
+        </div>
+
+        {/* Grid Kartu Profil Visual Ala Instagram/Medsos Grid */}
+        <div className="grid md:grid-cols-3 gap-8">
+          {pengurusInti.map((lead, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="bg-white rounded-[2.5rem] overflow-hidden shadow-xs border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col group"
+            >
+              {/* Wadah Foto Profil Inti */}
+              <div className="relative h-72 w-full bg-gray-100 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                <img 
+                  src={lead.foto} 
+                  alt={lead.nama} 
+                  className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
+                />
+                {/* Lencana Jabatan Mengambang */}
+                <div className="absolute top-4 right-4 z-20 bg-white/95 text-forest font-bold text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full shadow-xs backdrop-blur-xs border border-gray-100">
+                  {lead.jabatan}
+                </div>
+                {/* Nama di Dalam Gambar */}
+                <div className="absolute bottom-4 left-6 z-20 text-white">
+                  <h3 className="text-lg font-black tracking-tight leading-none">{lead.nama}</h3>
+                  <p className="text-[10px] text-gold font-mono mt-1 opacity-90">{lead.instagram}</p>
+                </div>
+              </div>
+
+              {/* Detail Keterangan Peran Jabatan */}
+              <div className="p-6 md:p-8 space-y-4 flex-grow flex flex-col justify-between bg-white">
+                <p className="text-xs text-gray-500 leading-relaxed font-light text-justify italic">
+                  "{lead.roleDesc}"
+                </p>
+                <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-[11px] font-medium text-forest">
+                  <span className="flex items-center gap-1 opacity-80">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block animate-pulse"></span> Active Member
+                  </span>
+                  <span className="text-gold font-mono uppercase tracking-wider text-[10px] bg-forest/5 px-2 py-0.5 rounded-sm">ID: PWN-00{index+1}</span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. DIVISI KERJA PENDUKUNG */}
+      <section className="py-16 bg-white border-y border-gray-100 px-4">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+          {divisiPendukung.map((org, index) => (
+            <div key={index} className={`border-2 ${org.warna} rounded-[2rem] p-6 space-y-4 shadow-2xs`}>
+              <h3 className="font-extrabold text-xs text-gray-800 uppercase tracking-wider border-b pb-2 border-gray-200/60">
+                {org.kategori}
+              </h3>
+              <div className="space-y-2.5">
+                {org.anggota.map((p, idx) => (
+                  <div key={idx} className="bg-white p-3 rounded-xl border border-gray-100/80 flex justify-between items-center text-xs shadow-3xs hover:border-gray-200 transition-colors">
+                    <span className="font-bold text-gray-900">{p.nama}</span>
+                    <span className="text-forest bg-forest/5 px-2.5 py-1 rounded-md font-semibold tracking-wide text-[9px] uppercase">{p.jabatan}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. NARASI STRATEGIS PERUSAHAAN */}
       <section className="py-20 px-4 max-w-5xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 items-start">
-          <div className="md:col-span-1 space-y-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-xs relative overflow-hidden group hover:shadow-md transition-shadow">
+          <div className="md:col-span-1 space-y-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-xs relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gold"></div>
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Ikhtisar Institusi</h3>
             <div className="space-y-3 text-xs md:text-sm text-gray-700">
@@ -136,7 +226,7 @@ export default function DetailedProfilePage() {
               Menjembatani Komoditas Global, <br className="hidden md:inline"/> Melindungi Kearifan Lokal
             </h2>
             <p>
-              Secara makro dan jaringan perdagangan internasional, <strong>Pangan Warga Nusantara</strong> bergerak sebagai salah satu agregator dan penyuplai komoditas rempah unggulan (seperti cengkih berkualitas tinggi dan biji pala) yang menghubungkan hasil bumi petani lokal Sulawesi Barat langsung ke pasar niaga yang lebih luas[cite: 1, 2]. Kami percaya bahwa keberhasilan ekonomi komoditas tidak boleh dilepaskan dari kesejahteraan komunitas adat yang merawat tanahnya.
+              Secara makro dan jaringan perdagangan internasional, <strong>Pangan Warga Nusantara</strong> bergerak sebagai salah satu agregator dan penyuplai komoditas rempah unggulan (seperti cengkih berkualitas tinggi dan biji pala) yang menghubungkan hasil bumi petani lokal Sulawesi Barat langsung ke pasar niaga yang lebih luas. Kami percaya bahwa keberhasilan ekonomi komoditas tidak boleh dilepaskan dari kesejahteraan komunitas adat yang merawat tanahnya.
             </p>
             <p>
               Oleh karena itu, secara mikro di akar rumput, kami mendedikasikan institusi ini untuk melakukan pemetaan pangan darurat, dokumentasi tradisi lisan etnobotani, serta revitalisasi pangan lokal alternatif pengganti padi seperti Jewawut (Tarreang) dan Umbi Gadung (Kundo) yang menuntut kecerdasan serta kesabaran tinggi dalam proses pengolahannya.
@@ -145,35 +235,7 @@ export default function DetailedProfilePage() {
         </div>
       </section>
 
-      {/* 3. BAGAN STRUKTUR ORGANISASI VISUAL */}
-      <section className="py-20 bg-white border-y border-gray-100 px-4 relative">
-        <div className="max-w-5xl mx-auto space-y-12">
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl md:text-3xl font-bold text-forest tracking-tight">Bagan Struktur Organisasi & Komite Kerja</h2>
-            <p className="text-xs text-gray-400 max-w-xl mx-auto">Sinergi kepengurusan formal dalam memastikan tata kelola administrasi bantuan pemerintah dan riset lapangan berjalan akuntabel.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {organisasi.map((org, index) => (
-              <div key={index} className={`border-2 ${org.warna} rounded-3xl p-6 space-y-4 shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1`}>
-                <h3 className="font-extrabold text-sm text-gray-800 uppercase tracking-wide border-b pb-2 border-gray-200/80">
-                  {org.kategori}
-                </h3>
-                <div className="space-y-3">
-                  {org.anggota.map((p, idx) => (
-                    <div key={idx} className="bg-white p-3 rounded-xl border border-gray-100/70 flex justify-between items-center text-xs shadow-2xs group cursor-default">
-                      <span className="font-bold text-gray-950 group-hover:text-forest transition-colors">{p.nama}</span>
-                      <span className="text-forest bg-forest/5 px-2 py-0.5 rounded-sm font-semibold tracking-wide text-[10px] uppercase">{p.jabatan}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. BAGAN KRONIK KEGIATAN */}
+      {/* 5. BAGAN KRONIK KEGIATAN & TIMELINE */}
       <section className="py-24 px-4 max-w-5xl mx-auto space-y-16">
         <div className="text-center space-y-2">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Bagan Rekam Jejak Aktivitas & Ekspedisi</h2>
@@ -221,7 +283,7 @@ export default function DetailedProfilePage() {
         </div>
       </section>
 
-      {/* 5. FOOTER LEGALITAS */}
+      {/* 6. FOOTER LEGALITAS */}
       <section className="py-12 bg-gray-900 text-white border-t-4 border-gold text-center px-4 text-xs font-mono tracking-wide opacity-95">
         <div className="max-w-2xl mx-auto space-y-2 text-gray-400 font-light">
           <p className="text-white font-medium">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</p>
