@@ -12,21 +12,21 @@ export default function DetailedProfilePage() {
       roleDesc: "Penanggung Jawab Utama & Pengarah Ekspedisi Kebudayaan",
       instagram: "@waissyakir61",
       // Kamu bisa ganti url gambar ini dengan foto asli Kak Wais nantinya
-      foto: "https://drive.google.com/file/d/1zmA74rAkvScOs2uOecFoh9U6Nm8yxySb/view?usp=drive_link" 
+      foto: "https://lh3.googleusercontent.com/u/0/d/1zmA74rAkvScOs2uOecFoh9U6Nm8yxySb" 
     },
     {
       nama: "Muhammad Fachri Siswanto",
       jabatan: "Sekretaris Organisasi",
       roleDesc: "Komparator Data Riset, Administrasi Kelayakan, & Hubungan Lembaga",
       instagram: "@fachrisiswanto",
-      foto: "https://drive.google.com/file/d/1UOnloMhWvLV4BoGDG9ntjgtKMK8FjVm7/view?usp=drive_link"
+      foto: "https://lh3.googleusercontent.com/u/0/d/1zmA74rAkvScOs2uOecFoh9U6"
     },
     {
       nama: "Sudrajat S",
       jabatan: "Bendahara Umum",
       roleDesc: "Manajemen Alokasi Anggaran & Akuntabilitas Dana Bantuan Kebudayaan",
       instagram: "@sudrajatliem",
-      foto: "https://drive.google.com/file/d/1w8RGreyIXYIfQ2GJwjwf-T6ABWYw6Z_n/view?usp=drive_link"
+      foto: "https://lh3.googleusercontent.com/u/0/d/1zmA74rAkvScOs2"
     }
   ];
 
