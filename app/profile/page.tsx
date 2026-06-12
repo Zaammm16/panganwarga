@@ -10,7 +10,7 @@ export default function DetailedProfilePage() {
       nama: "Muh. Wais",
       jabatan: "Ketua Umum",
       roleDesc: "Penanggung Jawab Utama & Pengarah Ekspedisi Kebudayaan",
-      instagram: "@wais_pwn",
+      instagram: "@waissyakir61",
       // Kamu bisa ganti url gambar ini dengan foto asli Kak Wais nantinya
       foto: "https://drive.google.com/file/d/1zmA74rAkvScOs2uOecFoh9U6Nm8yxySb/view?usp=drive_link" 
     },
@@ -18,14 +18,14 @@ export default function DetailedProfilePage() {
       nama: "Muhammad Fachri Siswanto",
       jabatan: "Sekretaris Organisasi",
       roleDesc: "Komparator Data Riset, Administrasi Kelayakan, & Hubungan Lembaga",
-      instagram: "@fachri_siswanto",
+      instagram: "@fachrisiswanto",
       foto: "https://drive.google.com/file/d/1UOnloMhWvLV4BoGDG9ntjgtKMK8FjVm7/view?usp=drive_link"
     },
     {
       nama: "Sudrajat S",
       jabatan: "Bendahara Umum",
       roleDesc: "Manajemen Alokasi Anggaran & Akuntabilitas Dana Bantuan Kebudayaan",
-      instagram: "@sudrajat_s",
+      instagram: "@sudrajatliem",
       foto: "https://drive.google.com/file/d/1w8RGreyIXYIfQ2GJwjwf-T6ABWYw6Z_n/view?usp=drive_link"
     }
   ];
