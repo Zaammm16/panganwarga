@@ -19,14 +19,14 @@ export default function DetailedProfilePage() {
       jabatan: "Sekretaris Organisasi",
       roleDesc: "Komparator Data Riset, Administrasi Kelayakan, & Hubungan Lembaga",
       instagram: "@fachrisiswanto",
-      foto: "https://lh3.googleusercontent.com/u/0/d/1zmA74rAkvScOs2uOecFoh9U6"
+      foto: "https://lh3.googleusercontent.com/u/0/d/1UOnloMhWvLV4BoGDG9ntjgtKMK8FjVm7"
     },
     {
       nama: "Sudrajat S",
       jabatan: "Bendahara Umum",
       roleDesc: "Manajemen Alokasi Anggaran & Akuntabilitas Dana Bantuan Kebudayaan",
       instagram: "@sudrajatliem",
-      foto: "https://lh3.googleusercontent.com/u/0/d/1zmA74rAkvScOs2"
+      foto: "https://lh3.googleusercontent.com/u/0/d/1w8RGreyIXYIfQ2GJwjwf-T6ABWYw6Z_n"
     }
   ];
 
